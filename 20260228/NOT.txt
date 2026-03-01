@@ -1,0 +1,2 @@
+Klavye Mouse ve masaüstü hazır
+dinamik bellek genişletme çalışıyor

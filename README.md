@@ -14,6 +14,18 @@ Proje, donanım seviyesinde kararlı bir korumalı mod (Protected Mode) ortamı 
 </p>
 ---
 
+---
+
+<p align="center">
+  <video width="600" autoplay muted loop controls>
+    <source src="assets/oba_demo.mp4" type="video/mp4">
+    Tarayıcınız video etiketini desteklemiyor.
+  </video>
+  <br>
+  <i>Video 1: OBA v1.0.4 - Fare Senkronizasyonu ve Canlı Pencere Sürükleme Demosu</i>
+</p>
+
+---
 
 ## 🛠️ Temel ve İleri Seviye Özellikler
 
@@ -68,17 +80,6 @@ Derleme kalıntılarını temizlemek ve tüm alt sistemleri nesne dosyalarına (
 
     make run
 
----
 
-<p align="center">
-  <video width="600" autoplay muted loop controls>
-    <source src="assets/oba_demo.mp4" type="video/mp4">
-    Tarayıcınız video etiketini desteklemiyor.
-  </video>
-  <br>
-  <i>Video 1: OBA v1.0.4 - Fare Senkronizasyonu ve Canlı Pencere Sürükleme Demosu</i>
-</p>
-
----
 📜 Lisans
 Bu proje Apache License 2.0 ile lisanslanmıştır. Detaylar için LICENSE dosyasına göz atabilirsiniz.

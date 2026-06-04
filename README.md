@@ -71,12 +71,14 @@ Derleme kalıntılarını temizlemek ve tüm alt sistemleri nesne dosyalarına (
 ---
 
 <p align="center">
-  <video src="assets/oba_demo.mp4" width="600px" autoplay muted loop controls></video>
+  <video width="600" autoplay muted loop controls>
+    <source src="assets/oba_demo.mp4" type="video/mp4">
+    Tarayıcınız video etiketini desteklemiyor.
+  </video>
   <br>
   <i>Video 1: OBA v1.0.4 - Fare Senkronizasyonu ve Canlı Pencere Sürükleme Demosu</i>
 </p>
 
 ---
-
 📜 Lisans
 Bu proje Apache License 2.0 ile lisanslanmıştır. Detaylar için LICENSE dosyasına göz atabilirsiniz.

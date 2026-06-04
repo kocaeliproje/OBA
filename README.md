@@ -18,7 +18,7 @@ Proje, donanım seviyesinde kararlı bir korumalı mod (Protected Mode) ortamı 
 
 <p align="center">
   <video width="600" autoplay muted loop controls>
-    <source src="assets/oba_demo.mp4" type="video/mp4">
+    <source src="https://github.com/user-attachments/assets/a321ff9b-7354-4775-9ee4-eed34674644d" type="video/mp4">
     Tarayıcınız video etiketini desteklemiyor.
   </video>
   <br>

@@ -7,9 +7,12 @@ Proje, donanım seviyesinde kararlı bir korumalı mod (Protected Mode) ortamı 
 
 ---
 
-![OBA v1.0.3 - Kararlı Metin Modu Masaüstü Arayüzü](assets/2026-06-04 223440.png)
-
-*Görsel 1: OBA v1.0.3 - İlk Kararlı Çoklu Görev ve Pencere Yönetimi Denemesi*
+<p align="center">
+  <img src="assets/2026-06-04 223440.png" alt="OBA v1.0.4 Pencere Denemesi" width="600px">
+  <br>
+  <i>Görsel 1: OBA v1.0.3 - İlk Masaüstü ve Pencere Yönetimi Denemesi</i>
+</p>
+---
 
 
 ## 🛠️ Temel ve İleri Seviye Özellikler
@@ -21,7 +24,7 @@ OBA Çekirdeği, ilkel bir monolitik yapıdan ziyade nesne tabanlı (OOP in C) t
 * **Çift Tamponlu Masaüstü Sunucusu (Double-Buffered GUI):** Donanımsal VBE/VGA sınırlamalarından bağımsız, tüm pencereleri ve bileşenleri önce RAM'deki `back_buffer` alanında işleyen ve ardından tek bir döngüde video belleğine fırlatarak ekran yırtılmalarını (flickering) önleyen pencere yöneticisi.
 * **Sanal Dosya Sistemi (VFS Prototipi):** Dinamik bellekten yer tahsis ederek dosya oluşturma (`create_file`), dosya okuma (`read_file`) ve dizin listeleme yeteneklerine sahip RAM tabanlı temel dosya sistemi.
 * **Senkronize Donanım Sürücüleri:** * **Fare (PS/2 Mouse):** Ham donanımsal piksel verilerini sanal bir uzayda biriktirip ekran çözünürlüğüne oranlayan, emülatör sınırlarından taşmayan ve tıklama/sürükleme (drag & drop) destekleyen IRQ12 sürücüsü.
-  * **Klavye (PS/2 Keyboard):** `Ctrl`, `Shift` gibi modifikasyon tuşlarının basılma/bırakılma durumlarını (Make/Break scancodes) anlık takip eden ve asenkron kısayol mekanizmasını besleyen IRQ1 sürücüsü.
+  * **Klavye (PS/2 Keyboard):** `Ctrl`, `Shift` gibi modifikasyon tuşlarının basılma/bırakılma durumlarını (Make/Break scancodes) anlık takip eden ve asenkron kısayol mekanizmasını besleyen IRQ1 sürücüsü. (Ctrl + o ve Ctrl +u test edildi.)
 
 ---
 
@@ -43,7 +46,8 @@ oba/
 ├── include/            # Sistem bileşenlerine ait tüm `.h` başlık (header) dosyaları
 ├── linker.ld           # Multiboot imzasını ilk 8KB içine sabitleyen 1MB hizalama betiği
 └── Makefile            # Otomasyon ve temiz derleme zinciri emirleri
-🚀 Derleme ve Çalıştırma
+
+##🚀 Derleme ve Çalıştırma
 OBA çekirdeği, freestanding (bağımsız) modda derlenmekte olup herhangi bir standart C kütüphanesine (glibc) bağımlı değildir.
 
 Gereksinimler
@@ -55,12 +59,24 @@ sudo apt install nasm gcc-multilib qemu-system-x86
 Projeyi Derlemek
 Derleme kalıntılarını temizlemek ve tüm alt sistemleri nesne dosyalarına (.o) dönüştürüp kernel.bin imajını bağlamak (link etmek) için:
 
-Bash
-make clean && make
-QEMU Emülatörü ile Çalıştırmak
-Çekirdeği doğrudan Multiboot standartlarında emüle etmek için:
 
-Bash
-make run
+1. **Derlemek için:**
+   
+   make
+
+2. **QEMU ile test etmek için:**
+
+    make run
+
+---
+
+<p align="center">
+  <video src="assets/oba_demo.mp4" width="600px" autoplay muted loop controls></video>
+  <br>
+  <i>Video 1: OBA v1.0.4 - Fare Senkronizasyonu ve Canlı Pencere Sürükleme Demosu</i>
+</p>
+
+---
+
 📜 Lisans
 Bu proje Apache License 2.0 ile lisanslanmıştır. Detaylar için LICENSE dosyasına göz atabilirsiniz.

@@ -1,0 +1,27 @@
+{
+  "name": "is",
+  "version": "1.0.0",
+  "description": "Kendi kendine öğrenme süreciyle geliştirilen, x86 (32-bit) mimarisini hedefleyen monolitik bir işletim sistemi çekirdeği.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kocaeliproje/is.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kocaeliproje/is/issues"
+  },
+  "homepage": "https://github.com/kocaeliproje/is#readme",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "semantic-release": "^25.0.3"
+  }
+}

@@ -16,14 +16,9 @@ Proje, donanım seviyesinde kararlı bir korumalı mod (Protected Mode) ortamı 
 
 ---
 
-<p align="center">
-  <video width="600" autoplay muted loop controls>
-    <source src="https://github.com/user-attachments/assets/a321ff9b-7354-4775-9ee4-eed34674644d" type="video/mp4">
-    Tarayıcınız video etiketini desteklemiyor.
-  </video>
-  <br>
-  <i>Video 1: OBA v1.0.4 - Fare Senkronizasyonu ve Canlı Pencere Sürükleme Demosu</i>
-</p>
+https://github.com/user-attachments/assets/a321ff9b-7354-4775-9ee4-eed34674644d
+
+<p align="center"><i>Video 1: OBA v1.0.4 - Fare Senkronizasyonu ve Canlı Pencere Sürükleme Demosu</i></p>
 
 ---
 

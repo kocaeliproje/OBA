@@ -2,6 +2,7 @@
 #ifndef GUI_H
 #define GUI_H
 
+
 typedef struct {
     int x, y;
     int width, height;

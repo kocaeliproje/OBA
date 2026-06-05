@@ -3,16 +3,30 @@
 #define KERNEL_H
 
 #include "hal.h" 
+#include <stdint.h>
 
-// Ekran Fonksiyonları
+// --- OBA Grafik Çözünürlük Tanımları ---
+#define SCREEN_WIDTH  800
+#define SCREEN_HEIGHT 600
+
+// kernel.c'de tanımlanan global buffer'lar
+extern uint32_t* vga_lineer_buffer;
+extern uint32_t* graphics_back_buffer;
+
+// Fonksiyon prototipleri
+void draw_pixel(int x, int y, uint32_t color);
+
+// Ekran Fonksiyonları (Grafik uyumlu)
 void print(char *str, char color);
 void clear_screen(void);
 
-// Fare Fonksiyonları
+// Sürücü Fonksiyonları
 void init_mouse(void);
 void mouse_handler(void);
+void init_keyboard(void);
+void init_timer(unsigned int frequency);
 
-// Multiboot yapıları
+// Multiboot Hafıza Haritası Yapısı
 struct multiboot_mmap_entry {
     unsigned int size;
     unsigned int base_addr_low;
@@ -22,25 +36,14 @@ struct multiboot_mmap_entry {
     unsigned int type;
 } __attribute__((packed));
 
-struct multiboot_info {
-    unsigned int flags;
-    unsigned int mem_lower;
-    unsigned int mem_upper;
-    unsigned int boot_device;
-    unsigned int cmdline;
-    unsigned int mods_count;
-    unsigned int mods_addr;
-    unsigned int syms[4];
-    unsigned int mmap_length;
-    unsigned int mmap_addr;
-} __attribute__((packed));
+// Buradaki eksik struct çakışmasını engellemek için doğrudan multiboot.h'ı dahil ediyoruz
+#include "multiboot.h"
 
 // --- Çekirdek İlklendirme Fonksiyonları ---
 void init_gdt(void);
 void init_idt(void);
-void init_pmm(struct multiboot_info* mbi);
+void init_pmm(multiboot_info_t* mbi); // Güncellendi: multiboot_info_t kullanıyor
 void init_paging(void);
-void init_timer(unsigned int frequency);
-void init_keyboard(void);
+void* kmalloc(unsigned int size); // mm.c içindeki bellek tahsis motoru
 
 #endif

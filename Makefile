@@ -40,8 +40,22 @@ $(OBJ_DIR)/boot.o: $(SRC_DIR)/boot.s
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $< -o $@
 
-run:
-	qemu-system-i386 -kernel kernel.bin -vga std
+run: kernel.bin
+	# ISO için gerekli klasör yapısını her ihtimale karşı dinamik olarak oluştur
+	mkdir -p build/iso/boot/grub
+	# grb.cfg dosyasını eğer yoksa otomatik olarak oraya yaz
+	echo 'set timeout=0' > build/iso/boot/grub/grub.cfg
+	echo 'set default=0' >> build/iso/boot/grub/grub.cfg
+	echo 'menuentry "OBA OS v1.0.4" {' >> build/iso/boot/grub/grub.cfg
+	echo '    multiboot /boot/kernel.bin' >> build/iso/boot/grub/grub.cfg
+	echo '    boot' >> build/iso/boot/grub/grub.cfg
+	echo '}' >> build/iso/boot/grub/grub.cfg
+	# Derlenen güncel çekirdeği ISO klasörüne kopyala
+	cp kernel.bin build/iso/boot/kernel.bin
+	# ISO imajını üret
+	grub-mkrescue -o oba.iso build/iso
+	# QEMU'yu CD-ROM emülasyonu ile ateşle!
+	qemu-system-i386 -cdrom oba.iso
 
 clean:
 	rm -rf $(OBJ_DIR) kernel.bin

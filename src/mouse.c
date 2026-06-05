@@ -2,22 +2,28 @@
 #include "kernel.h" 
 #include "hal.h"
 
+#define SCREEN_WIDTH  800
+#define SCREEN_HEIGHT 600
+
 extern volatile int cursor_pos_x;
 extern volatile int cursor_pos_y;
-volatile int mouse_left_button = 0; 
+extern volatile int mouse_left_button; 
 
 static unsigned char mouse_cycle = 0;
 static char mouse_byte[3];
 
+// DÜZELTİLDİ: "asm volatile" ile derleyicinin bu kritik donanım bekleme döngülerini silmesi engellendi!
 void mouse_wait(unsigned char type) {
     unsigned int _time_out = 100000;
     if (type == 0) {
         while (_time_out--) {
             if ((inb(0x64) & 1) == 1) return;
+            asm volatile("nop"); // Derleyici bu döngüye artık dokunamaz
         }
     } else {
         while (_time_out--) {
             if ((inb(0x64) & 2) == 0) return;
+            asm volatile("nop");
         }
     }
 }
@@ -51,9 +57,9 @@ void init_mouse() {
     mouse_write(0xF4); 
     mouse_read();
     
-    // Başlangıçta sanal piksel koordinatlarını ekranın tam ortasına (320x200 evreni) kuruyoruz
-    cursor_pos_x = 160;
-    cursor_pos_y = 100;
+    cursor_pos_x = 400;
+    cursor_pos_y = 300;
+    mouse_left_button = 0;
 }
 
 void mouse_handler() {
@@ -61,10 +67,16 @@ void mouse_handler() {
     
     if ((status & 0x01) && (status & 0x20)) {
         unsigned char data = inb(0x60);
+        
+        if (mouse_cycle == 0 && !(data & 0x08)) {
+            return; 
+        }
+
         mouse_byte[mouse_cycle++] = data;
 
         if (mouse_cycle == 3) {
             mouse_cycle = 0;
+
             mouse_left_button = (mouse_byte[0] & 0x01);
 
             int x_rel = mouse_byte[1];
@@ -73,16 +85,14 @@ void mouse_handler() {
             if (mouse_byte[0] & 0x10) x_rel |= 0xFFFFFF00;
             if (mouse_byte[0] & 0x20) y_rel |= 0xFFFFFF00;
 
-            // --- SANAL PİKSEL TABANLI HAREKET AKTARIMI ---
-            // Ham donanım verilerini çarparak/bölmeden geniş sanal uzama ekliyoruz
             cursor_pos_x += x_rel;
             cursor_pos_y -= y_rel; 
 
-            // Sanal Grafik Modu Sınır Koruması (320x200 piksel alanı)
             if (cursor_pos_x < 0) cursor_pos_x = 0;
-            if (cursor_pos_x > 319) cursor_pos_x = 319; 
+            if (cursor_pos_x >= SCREEN_WIDTH) cursor_pos_x = SCREEN_WIDTH - 1; 
+            
             if (cursor_pos_y < 0) cursor_pos_y = 0;
-            if (cursor_pos_y > 199) cursor_pos_y = 199;
+            if (cursor_pos_y >= SCREEN_HEIGHT) cursor_pos_y = SCREEN_HEIGHT - 1;
         }
     }
 

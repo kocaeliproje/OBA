@@ -8,7 +8,7 @@ Proje, donanım seviyesinde kararlı bir korumalı mod (Protected Mode) ortamı 
 ---
 
 <p align="center">
-  <img src="assets/2026-06-04 223440.png" alt="OBA v1.0.4 Pencere Denemesi" width="600px">
+  <img src="assets/boot_screen.png" alt="OBA v1.0.4 Pencere Denemesi" width="600px">
   <br>
   <i>Görsel 1: OBA v1.0.4 - Grafik Masaüstü Arayüzü ve Gelişmiş Grafik Pencere Yönetimi</i>
 </p>

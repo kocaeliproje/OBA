@@ -9,17 +9,35 @@ static void sched_init(Scheduler_t* self) {
     for(int i = 0; i < 3; i++) self->tasks[i].state = 0;
 }
 
+/* src/sched.c - Sadece sched_create_task fonksiyonunu bu kararlı sürümle değiştirin */
 static void sched_create_task(Scheduler_t* self, int index, void (*entry_point)()) {
     Task_t* t = &self->tasks[index];
-    unsigned int* stack = (unsigned int*) kmalloc_aligned(4096, 1); // 4KB Hizalı yığın
+    unsigned int* stack = (unsigned int*) kmalloc_aligned(4096, 1); 
     unsigned int* stack_top = stack + 1024;
 
-    stack_top--; *stack_top = 0x0202;         // EFLAGS (Kesmeleri açar)
-    stack_top--; *stack_top = 0x08;           // CS (Kernel Code)
-    stack_top--; *stack_top = (unsigned int)entry_point; // EIP
+    /* --- REGS_T VE BOOT.S IRET ÇERÇEVESİ KUSURSUZ SİMETRİSİ --- */
+    stack_top--; *stack_top = 0x0202;                     // EFLAGS (Kesmeleri açar, Bit 9 = 1)
+    stack_top--; *stack_top = 0x08;                       // CS (Kernel Code)
+    stack_top--; *stack_top = (unsigned int)entry_point;  // EIP (Görevin adresi)
     
-    // pusha simülasyonu
-    for(int i = 0; i < 8; i++) { stack_top--; *stack_top = 0; }
+    stack_top--; *stack_top = 32;                         // int_no (IRQ0)
+    stack_top--; *stack_top = 0;                          // err_code
+
+    // pusha Alanı (EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX)
+    stack_top--; *stack_top = 0;                          // edi
+    stack_top--; *stack_top = 0;                          // esi
+    stack_top--; *stack_top = 0;                          // ebp
+    stack_top--; *stack_top = 0;                          // esp_dummy
+    stack_top--; *stack_top = 0;                          // ebx
+    stack_top--; *stack_top = 0;                          // edx
+    stack_top--; *stack_top = 0;                          // ecx
+    stack_top--; *stack_top = 0;                          // eax
+
+    // boot.s pop sırasına göre segment mühürleri
+    stack_top--; *stack_top = 0x10;                       // ds
+    stack_top--; *stack_top = 0x10;                       // es
+    stack_top--; *stack_top = 0x10;                       // fs
+    stack_top--; *stack_top = 0x10;                       // gs
 
     t->esp = (unsigned int)stack_top;
     t->state = 1; // TASK_READY

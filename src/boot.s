@@ -81,27 +81,39 @@ extern timer_handler
 global timer_handler_stub
 
 timer_handler_stub:
-    push 0          
-    push 32         
-    pusha           
-    push ds
+    ; 1. Donanım hatası simülasyonu için stack hizalaması (regs_t err_code ve int_no alanları için)
+    push 0          ; Sahte hata kodu (error code)
+    push 32         ; Kesme numarası (Interrupt Number: IRQ0 = INT 32)
+    
+    ; 2. CPU Durumunu (Context) Eksiksiz Sakla
+    pusha           ; EADI, ESI, EBP, ESP, EBX, EDX, ECX, EAX kayıtçılarını it
+    push ds         ; Veri segmentlerini koruma altına al
     push es
     push fs
     push gs
+
+    ; 3. Çekirdek veri segmentini yükle (Emniyet kilidi)
     mov ax, 0x10
     mov ds, ax
     mov es, ax
-    push esp        
+
+    ; 4. Mevcut Yığın İşaretçisini (ESP) C fonksiyonuna parametre olarak gönder
+    push esp        ; regs_t* r parametresi olarak stack adresini gönderiyoruz
     call timer_handler
-    mov esp, eax    ; C'den dönen yeni ESP değerini yükle
+    
+    ; 5. BAĞLAM DEĞİŞİMİ SİHİRLİ NOKTASI
+    ; C fonksiyonu (timer_handler), sıradaki görevin ESP adresini EAX yazmacı ile döner.
+    mov esp, eax    ; Yığın işaretçisini sıradaki görevin stack alanına kaydırıyoruz!
+
+    ; 6. Yeni Görevin Dünyasını Geri Yükle (Restore Context)
     pop gs
     pop fs
     pop es
     pop ds
-    popa
-    add esp, 8
-    iret
-
+    popa            ; Yeni görevin pusha ile saklanan tüm yazmaçları geri yüklenir
+    add esp, 8      ; Çakma hata kodu ve int_no alanlarını stack'ten temizle
+    iret            ; EIP, CS ve EFLAGS yüklenir, yeni görev kaldığı yerden devam eder!
+    
 global load_page_directory
 load_page_directory:
     mov eax, [esp + 4]

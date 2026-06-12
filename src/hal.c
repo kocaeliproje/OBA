@@ -1,16 +1,17 @@
-/* src/hal.c */
+/* * src/hal.c - OBA-32 Donanım Soyutlama Katmanı Fonksiyon Gerçekleşimi
+ * Sadece inline olamayacak büyüklükteki donanımsal sistem prosedürlerini barındırır.
+ */
+
 #include "hal.h"
+#include <stdint.h>
 
-// Port'a veri gönderir
-void outb(unsigned short port, unsigned char val) {
-    asm volatile ("outb %0, %1" : : "a"(val), "Nd"(port));
+void sys_shutdown(void) {
+    /* QEMU/ACPI donanımsal kapatma port sinyallerinin gönderilmesi */
+    outw(0xB004, 0x2000); /* Eski QEMU sürümleri için ACPI kapatma yönergesi */
+    outw(0x604, 0x2000);  /* Modern QEMU/ICH9 standartları için ACPI kapatma yönergesi */
+    
+    /* Donanım kapatma başarısız olursa işlemciyi güvenli askı moduna al */
+    while(1) {
+        asm volatile("cli; hlt");
+    }
 }
-
-// Port'tan veri okur
-unsigned char inb(unsigned short port) {
-    unsigned char ret;
-    asm volatile ("inb %1, %0" : "=a"(ret) : "Nd"(port));
-    return ret;
-}
-
-// Diğer HAL fonksiyonlarını da zamanla buraya doldurabilirsin

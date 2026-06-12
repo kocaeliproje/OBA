@@ -4,6 +4,18 @@ Bu projedeki tüm önemli değişiklikler bu dosyada belgelenecektir.
 Format [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) standartlarına dayanmaktadır
 ve bu proje [Semantic Versioning](https://semver.org/spec/v2.0.0.html) kurallarına uymaya çalışır.
 
+## [1.0.5] - 2026-06-05
+
+### Eklendi
+feat(gui,drivers): entegre grafik arayüzü, Z-Order yönetimi ve dairesel klavye sürücüsü
+
+- ISO/IEC 8859-1 standartlarında 8x8 VGA bitmap yazı tipi motoru src/gui.c modülüne dahil edildi.
+- Pencerelerin herhangi bir yüzeyine tıklandığında katman önceliğini güncelleyen akıllı odaklanma (Z-Order) algoritması devreye alındı.
+- Başlat menüsüne emülatör ve ACPI güç yönetimini tetikleyen statik "Shutdown" işlevi ve outw satır içi montaj (inline assembly) fonksiyonu eklendi.
+- Korumalı mod sayfalama (paging) tablolarının devreye alınması sonrasına taşınarak açılış logosunun (splash screen) LFB üzerinde kararlı çalışması sağlandı.
+- Sürücü ilklendirme sırası revize edilerek PS/2 fare ve klavye donanımlarının kesme gürültüsünden arındırılmış CLI modunda kurulması sağlandı.
+- IRQ1 kesmelerini dairesel bir FIFO kuyruğunda depolayan gerçek zamanlı klavye sürücüsü kodlandı ve TERMINAL penceresi dinamik girdiye uyarlandı.
+
 ## [1.0.4] - 2026-03-01
 
 ### Eklendi

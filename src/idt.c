@@ -1,5 +1,7 @@
 /* idt.c */
 
+#include "hal.h"
+
 // IDT ve dış fonksiyon tanımlamaları (DİKKAT: Bunları ekledik)
 extern void outb(unsigned short port, unsigned char val);
 extern void keyboard_handler_stub(); // Klavye fonksiyonunu tanıttık
